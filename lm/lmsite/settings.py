@@ -147,7 +147,6 @@ INSTALLED_APPS = (
     'django.contrib.admin',
     'django_evolution',
     'laundry',
-
 )
 
 # A sample logging configuration. The only tangible logging
