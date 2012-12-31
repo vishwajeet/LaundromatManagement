@@ -1,0 +1,7 @@
+[settings]
+DATABASE_ENGINE = postgresql_psycopg2
+DATABASE_NAME = lm
+DATABASE_USER = postgres
+DATABASE_PASSWORD = postgres
+DATABASE_HOST = localhost
+DATABASE_PORT = 5432

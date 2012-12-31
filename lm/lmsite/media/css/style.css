@@ -1,0 +1,8 @@
+.required_icon{background-image:url(../images/icongrid.png);background-repeat:no-repeat;content:"";padding:11px;display:inline-block;vertical-align:text-top;background-position:-88px -22px;}
+
+.prev{float:right;}
+.first{float:right;}
+.smallfield{width:100px;}
+#itemtable th{font-size: 14px;}
+.disNone{display:none;}
+.well .disNone{display:block;border:solid 1px; padding-top:5px;padding-bottom:2px;}
