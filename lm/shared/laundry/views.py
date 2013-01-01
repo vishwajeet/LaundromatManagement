@@ -115,6 +115,7 @@ def compute_bill(request):
 
 def get_orders(request):
     orders = Order.objects.all()
+    orders = orders.exclude(status='DE')
     template_context = {'orders':orders}
     return render_to_response('laundry/orders.xhtml',template_context,context_instance=RequestContext(request))
     
