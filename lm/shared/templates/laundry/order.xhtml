@@ -8,8 +8,9 @@
 {% block content %}
 <div class="well">
 	<form action="{% url add-order %}" method="post" class="form-horizontal">{% csrf_token %}
-	
-	{%for fld in form.visible_fields%}
+	<div id="customer">
+	<h3> Customer Details</h3>
+	{%for fld in customer_form.visible_fields%}
 	    <div class="control-group">
 			<label class="control-label" {%if field.id%}for="{{field.id}}"{%endif%}>
         		{%if fld.field.required%}<i class="required_icon"></i>{%endif%}{{fld.label|title}}
@@ -26,7 +27,27 @@
     		</div>
     	</div>
 	{%endfor%}
-	
+	</div>
+	<div id="order">
+	<h3> Order Details</h3>
+	{%for fld in order_form.visible_fields%}
+	    <div class="control-group">
+			<label class="control-label" {%if field.id%}for="{{field.id}}"{%endif%}>
+        		{%if fld.field.required%}<i class="required_icon"></i>{%endif%}{{fld.label|title}}
+    		</label>
+    		<div class="controls">
+     		 	{{fld}}
+     		 	{% if fld.errors %}
+	     		 	<span class="text-error">
+	     		 	{% for err in fld.errors %}
+	     		 		{{ err }}
+	     		 	{% endfor %}
+	     		 	</span>
+     		 	{% endif %}
+    		</div>
+    	</div>
+	{%endfor%}
+	</div>
 	<div class="control-group">
 	    <div class="controls">
 	      <button type="submit" class="btn">Add</button>
@@ -34,10 +55,19 @@
   	</div>
 	</form>
 	<script type="text/javascript">
-	$("#mobile_number").focusout(function(){
-		lbt_no = $("#mobile_number").val();
-		$.get("#", { lbt_no:lbt_no }, function(data) {
-			  $('#detail').html(data);
+	$("#id_mobile_number").focusout(function(){
+		mobile_no = $("#id_mobile_number").val();
+		$.get("{% url customer-detail %}", { mobile_no:mobile_no }, function(data) {
+			  success = data.success
+			  if(success)
+			  {
+				  $("#id_name").val(data.name);
+				  $("#id_email").val(data.email);
+			  }
+			  else
+			  {
+				alert("new customer");  
+			  }
 			});
 		});
 		

@@ -1,0 +1,21 @@
+{% extends "base.xhtml" %}
+
+{% block head_title %}Order Confirmation{% endblock %}
+
+
+	{% block header %} Order Confirmation {% endblock %}
+	
+{% block content %}
+<div class="hero-unit">
+  <p>Order added successfully for {{customer.name}}</p>
+  <p>
+  For reference keep your order id : {{order.id}} 
+  </p>
+  
+  <a class="btn btn-primary" href="{% url add-order %}">
+      Take another order
+   </a>
+  
+</div>
+
+{% endblock %}
