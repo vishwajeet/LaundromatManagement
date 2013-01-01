@@ -27,8 +27,18 @@ class Order(models.Model):
     date = models.DateTimeField(auto_now_add=True, verbose_name=_('Transaction Date:'))
     wash_load = models.DecimalField(verbose_name=_('Wash Load'),decimal_places=2,max_digits=10,
                                              help_text=_("Wash Load in Kgs"),blank=True, null=True)
+    
+    wash_price = models.IntegerField(verbose_name=_('Wash Price'),help_text=_("Wash Price"),
+                                     blank=True, null=True)
+    
     iron_load = models.IntegerField(verbose_name=_('Iron Load'),
                                              help_text=_("Iron Load in pieces"),blank=True, null=True)
+    
+    iron_price = models.IntegerField(verbose_name=_('Iron Price'),help_text=_("Iron Price"),
+                                     blank=True, null=True)
+    discount =  models.IntegerField(verbose_name=_('Discount'),help_text=_("Discount"),
+                                    blank=True, null=True)
+    
     billed_amount = models.IntegerField(verbose_name=_('Billed Amount'),
                                              help_text=_("Total Billed Amount"))
     status = models.CharField(verbose_name=_('Status of Order'), max_length=20,

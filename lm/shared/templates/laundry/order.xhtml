@@ -71,31 +71,34 @@
 			});
 		});
 	
-	$("#id_wash_load").focusout(function(){
+	function compute_bill()
+	{
+		
 		iron_load = 0;
+		discount = 0;
 		wash_load = Math.round($("#id_wash_load").val());
 		if($("#id_iron_load").val())
-			{
+		{
 				iron_load = $("#id_iron_load").val();
-			}
-		$.get("{% url compute-bill %}", { wash_load:wash_load,iron_load:iron_load }, function(data) {
+		}
+		
+		if($("#id_discount").val())
+		{
+			discount = $("#id_discount").val();
+		}
+		
+		$.get("{% url compute-bill %}", { wash_load:wash_load,iron_load:iron_load,discount:discount }, function(data) {
 			  $("#id_billed_amount").val(data.total);
+			  $("#id_wash_price").val(data.wash_cost);
+			  $("#id_iron_price").val(data.iron_cost);
 			
 			});
-		});
+	}
+	$("#id_wash_load").focusout(compute_bill);
 	
-	$("#id_iron_load").focusout(function(){
-		iron_load = 0;
-		wash_load = Math.round($("#id_wash_load").val());
-		if($("#id_iron_load").val())
-			{
-				iron_load = $("#id_iron_load").val();
-			}
-		$.get("{% url compute-bill %}", { wash_load:wash_load,iron_load:iron_load }, function(data) {
-			  $("#id_billed_amount").val(data.total);
-			
-			});
-		});
+	$("#id_iron_load").focusout(compute_bill);
+	
+	$("#id_discount").focusout(compute_bill);
 		
 	</script>
 </div>

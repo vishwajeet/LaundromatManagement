@@ -68,13 +68,15 @@ def compute_bill(request):
     upto 7 200
     Above 7 200+30*extra kgs
     '''
-    rates = {'3':100,'4':130,'5':150,'6':180,'7':200}
+    rates = {'0':0,'3':100,'4':130,'5':150,'6':180,'7':200}
     
-    wash_load = request.GET.get('wash_load', None)
-    iron_load = request.GET.get('iron_load', None)
+    wash_load = request.GET.get('wash_load', 0)
+    iron_load = request.GET.get('iron_load', 0)
+    discount = request.GET.get('discount', 0)
     
     wash_load_int = int(wash_load)
     iron_load_int = int(iron_load)
+    discount = int(discount)
     wash_cost = 0
     if wash_load_int > 7:
         excess_load = wash_load_int-7
@@ -83,10 +85,10 @@ def compute_bill(request):
         wash_cost = rates[wash_load]
     
     iron_cost = iron_load_int*5
-    total = wash_cost+iron_cost
+    total = wash_cost+iron_cost - discount
     
     
-    data = {'total':total}
+    data = {'total':total,'wash_cost':wash_cost,'iron_cost':iron_cost}
     json = simplejson.dumps(data)
     return HttpResponse(json, mimetype="application/json")
     
