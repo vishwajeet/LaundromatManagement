@@ -10,7 +10,8 @@ ORDER_STATUS_CHOICES = (
 
 class Customer(models.Model):
     
-    mobile_number = models.BigIntegerField(verbose_name=_('Mobile Number'),help_text=_("Enter mobile number 10 digits"))
+    mobile_number = models.BigIntegerField(verbose_name=_('Mobile Number'),unique=True,
+                                           help_text=_("Enter mobile number 10 digits"))
     name = models.CharField(verbose_name=_('Customer Name'), max_length=100,help_text=_("Name of Customer"))
     email = models.EmailField(verbose_name=_('E-mail address:'),blank=True, null=True)
     alt_contact_number = models.BigIntegerField(verbose_name=_('Alternate Contact Number'),
@@ -21,6 +22,9 @@ class Customer(models.Model):
     class Meta:
         verbose_name = 'Customer'
         app_label = 'laundry'
+        
+    def __unicode__(self):
+        return "%s(%d)"%(self.name,self.mobile_number)
 
 class Order(models.Model):
     customer = models.ForeignKey('Customer', verbose_name=_('Customer'))
@@ -51,4 +55,8 @@ class Order(models.Model):
     class Meta:
         verbose_name = 'Order'
         app_label = 'laundry'
+        
+            
+    def __unicode__(self):
+        return "%s-%d(%s Kgs,%s pcs)"%(self.customer.name,self.customer.mobile_number,self.wash_load,self.iron_load)
     
