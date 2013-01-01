@@ -41,10 +41,12 @@ class Order(models.Model):
     
     billed_amount = models.IntegerField(verbose_name=_('Billed Amount'),
                                              help_text=_("Total Billed Amount"))
+    
+    bill_no = models.IntegerField(verbose_name=_('Bill No'),blank=True, null=True,
+                                             help_text=_("Bill No"))
     status = models.CharField(verbose_name=_('Status of Order'), max_length=20,
                               help_text=_("Current Status of Order"), choices=ORDER_STATUS_CHOICES, default='IQ')
     payment_status = models.BooleanField(verbose_name=_('Payment Status:'), default=False)
-    collection_status = models.BooleanField(verbose_name=_('Collection Status:'), default=False)
     
     class Meta:
         verbose_name = 'Order'

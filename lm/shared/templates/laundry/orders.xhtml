@@ -1,0 +1,43 @@
+{% extends "base.xhtml" %}
+{% block head_title %}Orders {% endblock %}
+
+
+	{% block header %} Orders {% endblock %}
+	
+{% block content %}
+<div class="well">
+	
+	<table  class="table table-bordered">
+		<thead>
+			<tr>
+				<th>Date</th>
+    			<th>Name</th>
+    			<th>Mob. No.</th>
+    			<th>Wash</th>
+    			<th>Iron</th>
+    			<th>Discount</th>
+    			<th>Total</th>
+    			<th>Bill No</th>
+    			<th>Status</th>
+    			<th>Action</th>
+  			</tr>
+		</thead>
+  		<tbody>		
+  			{% for order in orders %}
+  			<tr>
+  				<td>{{order.date|date:"M d, Y" }}</td>
+    			<td>{{order.customer.name}}</td>
+    			<td>{{order.customer.mobile_number}}</td>
+    			<td>{{order.wash_load}}</td>
+    			 <td>{{order.iron_load}}</td>
+    			 <td>{{order.discount}}</td>
+    			 <td>{{order.billed_amount}}</td>
+    			 <td>{{order.id}}</td>
+    			  <td>{{order.get_status_display}}</td>
+    			  <td><a href="{% url edit-order order.id%}" class="icon-edit" title="Edit Order"></a></td>
+  			</tr>
+	  		{% endfor %}
+	  	</tbody>
+	 </table>
+</div>
+{% endblock %}

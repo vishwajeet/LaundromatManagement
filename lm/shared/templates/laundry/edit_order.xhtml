@@ -1,0 +1,107 @@
+{% extends "base.xhtml" %}
+
+{% block head_title %}Edit Order{% endblock %}
+
+
+	{% block header %} Edit Order {% endblock %}
+	
+{% block content %}
+<p><a class="btn btn-primary" href="{% url get-orders %}">List of Orders </a></p>
+<div class="well">
+	<form action="{% url edit-order order.id %}" method="post" class="form-horizontal">{% csrf_token %}
+		<div id="order">
+	<h3> Order Details</h3>
+	{%for fld in order_form.visible_fields%}
+	    <div class="control-group">
+			<label class="control-label" {%if field.id%}for="{{field.id}}"{%endif%}>
+        		{%if fld.field.required%}<i class="required_icon"></i>{%endif%}{{fld.label|title}}
+    		</label>
+    		<div class="controls">
+     		 	{{fld}}
+     		 	{% if fld.errors %}
+	     		 	<span class="text-error">
+	     		 	{% for err in fld.errors %}
+	     		 		{{ err }}
+	     		 	{% endfor %}
+	     		 	</span>
+     		 	{% endif %}
+    		</div>
+    	</div>
+	{%endfor%}
+	</div>
+	
+	<div id="customer">
+	<h3> Customer Details</h3>
+	{%for fld in customer_form.visible_fields%}
+	    <div class="control-group">
+			<label class="control-label" {%if field.id%}for="{{field.id}}"{%endif%}>
+        		{%if fld.field.required%}<i class="required_icon"></i>{%endif%}{{fld.label|title}}
+    		</label>
+    		<div class="controls">
+     		 	{{fld}}
+     		 	{% if fld.errors %}
+	     		 	<span class="text-error">
+	     		 	{% for err in fld.errors %}
+	     		 		{{ err }}
+	     		 	{% endfor %}
+	     		 	</span>
+     		 	{% endif %}
+    		</div>
+    	</div>
+	{%endfor%}
+	</div>
+	<div class="control-group">
+	    <div class="controls">
+	      <button type="submit" class="btn">Update</button>
+	    </div>
+  	</div>
+	</form>
+	<script type="text/javascript">
+	$("#id_mobile_number").focusout(function(){
+		mobile_no = $("#id_mobile_number").val();
+		$.get("{% url customer-detail %}", { mobile_no:mobile_no }, function(data) {
+			  success = data.success
+			  if(success)
+			  {
+				  $("#id_name").val(data.name);
+				  $("#id_email").val(data.email);
+			  }
+			  else
+			  {
+				alert("new customer");  
+			  }
+			});
+		});
+	
+	function compute_bill()
+	{
+		
+		iron_load = 0;
+		discount = 0;
+		wash_load = Math.round($("#id_wash_load").val());
+		if($("#id_iron_load").val())
+		{
+				iron_load = $("#id_iron_load").val();
+		}
+		
+		if($("#id_discount").val())
+		{
+			discount = $("#id_discount").val();
+		}
+		
+		$.get("{% url compute-bill %}", { wash_load:wash_load,iron_load:iron_load,discount:discount }, function(data) {
+			  $("#id_billed_amount").val(data.total);
+			  $("#id_wash_price").val(data.wash_cost);
+			  $("#id_iron_price").val(data.iron_cost);
+			
+			});
+	}
+	$("#id_wash_load").focusout(compute_bill);
+	
+	$("#id_iron_load").focusout(compute_bill);
+	
+	$("#id_discount").focusout(compute_bill);
+		
+	</script>
+</div>
+{% endblock %}

@@ -11,7 +11,7 @@ from django.utils import simplejson
 from django.template.loader import get_template
 
 from .forms import OrderForm, CustomerForm
-from .models import Customer
+from .models import Customer, Order
 
 def add_customer(request):
     pass
@@ -52,13 +52,34 @@ def add_order(request):
             return render_to_response('laundry/order_success.xhtml',template_context,context_instance=RequestContext(request))
         else:
           template_context = {'order_form': order_form,'customer_form':customer_form}
-          return render_to_response('laundry/order.xhtml',template_context,context_instance=RequestContext(request))
+          return render_to_response('laundry/add_order.xhtml',template_context,context_instance=RequestContext(request))
   
     order_form = OrderForm()
     customer_form = CustomerForm()
     template_context = {'order_form': order_form,'customer_form':customer_form}
-    return render_to_response('laundry/order.xhtml',template_context,context_instance=RequestContext(request))
+    return render_to_response('laundry/add_order.xhtml',template_context,context_instance=RequestContext(request))
 
+def order_edit(request,order_id):
+    try:
+        order = Order.objects.get(id=order_id)
+    except:
+        raise Http404
+    if request.POST:
+        order_form = OrderForm(request.POST,instance=order)
+        customer_form = CustomerForm(request.POST,instance=order.customer)
+        if customer_form.is_valid() and order_form.is_valid():
+            customer_form.save()
+            order_form.save()
+        else:
+            template_context = {'order_form': order_form,'customer_form':customer_form, 'order':order}
+            return render_to_response('laundry/edit_order.xhtml',template_context,context_instance=RequestContext(request))
+        
+    order_form = OrderForm(instance=order)
+    customer_form = CustomerForm(instance=order.customer)
+    template_context = {'order_form': order_form,'customer_form':customer_form, 'order':order}
+    return render_to_response('laundry/edit_order.xhtml',template_context,context_instance=RequestContext(request))
+
+    
 def compute_bill(request):
     '''
     upto 3 kgs 100
@@ -91,5 +112,11 @@ def compute_bill(request):
     data = {'total':total,'wash_cost':wash_cost,'iron_cost':iron_cost}
     json = simplejson.dumps(data)
     return HttpResponse(json, mimetype="application/json")
+
+def get_orders(request):
+    orders = Order.objects.all()
+    template_context = {'orders':orders}
+    return render_to_response('laundry/orders.xhtml',template_context,context_instance=RequestContext(request))
+    
     
 
