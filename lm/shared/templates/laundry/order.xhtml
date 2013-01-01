@@ -70,6 +70,32 @@
 			  }
 			});
 		});
+	
+	$("#id_wash_load").focusout(function(){
+		iron_load = 0;
+		wash_load = Math.round($("#id_wash_load").val());
+		if($("#id_iron_load").val())
+			{
+				iron_load = $("#id_iron_load").val();
+			}
+		$.get("{% url compute-bill %}", { wash_load:wash_load,iron_load:iron_load }, function(data) {
+			  $("#id_billed_amount").val(data.total);
+			
+			});
+		});
+	
+	$("#id_iron_load").focusout(function(){
+		iron_load = 0;
+		wash_load = Math.round($("#id_wash_load").val());
+		if($("#id_iron_load").val())
+			{
+				iron_load = $("#id_iron_load").val();
+			}
+		$.get("{% url compute-bill %}", { wash_load:wash_load,iron_load:iron_load }, function(data) {
+			  $("#id_billed_amount").val(data.total);
+			
+			});
+		});
 		
 	</script>
 </div>

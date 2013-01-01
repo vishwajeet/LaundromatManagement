@@ -25,7 +25,7 @@ class Customer(models.Model):
 class Order(models.Model):
     customer = models.ForeignKey('Customer', verbose_name=_('Customer'))
     date = models.DateTimeField(auto_now_add=True, verbose_name=_('Transaction Date:'))
-    wash_load = models.IntegerField(verbose_name=_('Wash Load'),
+    wash_load = models.DecimalField(verbose_name=_('Wash Load'),decimal_places=2,max_digits=10,
                                              help_text=_("Wash Load in Kgs"),blank=True, null=True)
     iron_load = models.IntegerField(verbose_name=_('Iron Load'),
                                              help_text=_("Iron Load in pieces"),blank=True, null=True)
