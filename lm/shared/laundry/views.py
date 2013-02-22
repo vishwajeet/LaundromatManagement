@@ -1,5 +1,6 @@
 import os
 import datetime
+import operator
 
 from django.conf import settings
 from django.shortcuts import render,render_to_response
@@ -115,11 +116,20 @@ def compute_bill(request):
 
 def get_orders(request):
     query = request.GET.get("q", 'pending')
-    orders = Order.objects.all()
+    orders = Order.objects.all().order_by('-date')
     if query=='pending':
         orders = orders.exclude(status='DE')
+    if query=='delivered':
+        orders = orders.filter(status='DE')
     template_context = {'orders':orders}
     return render_to_response('laundry/orders.xhtml',template_context,context_instance=RequestContext(request))
+
+def get_customers(request):
+    customers =  list(Customer.objects.all())
+    customers.sort(key=lambda x: x.last_visit,reverse=True)
+    template_context = {'customers':customers}
+    return render_to_response('laundry/customers.xhtml',template_context,context_instance=RequestContext(request))
+
     
     
 

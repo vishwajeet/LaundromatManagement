@@ -26,5 +26,24 @@
   		<a class="btn  btn-primary" type="button" href="{% url get-orders %}">Pending Orders</a>
   	</p>
   </div>
+  
+  <div class="well span4">
+  	<p class="text-success">
+		Delivered Orders
+	</p>
+  	<p>
+  	
+  		<a class="btn  btn-primary" type="button" href="{% url get-orders %}?q=delivered">Delivered Orders</a>
+  	</p>
+  </div>
+  
+  <div class="well span4">
+  	<p class="text-success">
+		Customer List
+	</p>
+  	<p> 	
+  		<a class="btn  btn-primary" type="button" href="{% url get-customers %}">Customer List</a>
+  	</p>
+  </div>
   	
  {% endblock %}

@@ -1,6 +1,8 @@
 from django.db import models
 from django.utils.translation import ugettext_lazy as _
 
+import datetime
+
 ORDER_STATUS_CHOICES = (
     ('IQ', 'In Que'),
     ('IP', 'In Progress'),
@@ -25,6 +27,17 @@ class Customer(models.Model):
         
     def __unicode__(self):
         return "%s(%d)"%(self.name,self.mobile_number)
+    
+    @property
+    def last_visit(self):
+        last_visit = "No Visits"
+        orders = Order.objects.filter(customer=self).order_by('-date')
+        if len(orders) > 0:
+            last_visit_date = orders[0].date.date()
+            last_visit = (datetime.date.today() - last_visit_date).days
+            
+        return last_visit
+
 
 class Order(models.Model):
     customer = models.ForeignKey('Customer', verbose_name=_('Customer'))

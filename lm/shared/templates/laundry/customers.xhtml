@@ -1,0 +1,35 @@
+{% extends "base.xhtml" %}
+{% block head_title %}Customers {% endblock %}
+
+
+	{% block header %} Customers {% endblock %}
+	
+{% block content %}
+<div class="well">
+	
+	<table  class="table table-bordered">
+		<thead>
+			<tr>
+    			<th>Name</th>
+    			<th>Mob. No.</th>
+    			<th>Alternate Number</th>
+    			<th>Email</th>
+				<th>Address</th>
+    			<th>Last Visit</th>
+  			</tr>
+		</thead>
+  		<tbody>		
+  			{% for customer in customers %}
+  			<tr>
+  				<td>{{customer.name}}</td>
+    			<td>{{customer.mobile_number}}</td>
+    			<td>{{customer.alt_contact_number}}</td>
+    			<td>{{customer.email}}</td>
+    			 <td>{{customer.address}}</td>
+    			 <td>{{customer.last_visit}}</td>
+  			</tr>
+	  		{% endfor %}
+	  	</tbody>
+	 </table>
+</div>
+{% endblock %}

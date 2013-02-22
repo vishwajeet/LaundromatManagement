@@ -2,7 +2,7 @@ from django.conf.urls.defaults import patterns, include, url
 from django.conf import settings
 
 
-from laundry.views import add_customer,customer_detail,add_order,compute_bill,get_orders,order_edit
+from laundry.views import add_customer,customer_detail,add_order,compute_bill,get_orders,order_edit,get_customers
 
 urlpatterns = patterns('',
           url(r'^customer/add/$', add_customer,name='add-customer'),
@@ -11,4 +11,5 @@ urlpatterns = patterns('',
           url(r'^customer/detail/$', customer_detail,name='customer-detail'),
           url(r'^computebill/$', compute_bill,name='compute-bill'),
           url(r'^orders/$', get_orders,name='get-orders'),
+          url(r'^customers/$', get_customers,name='get-customers'),
         )
