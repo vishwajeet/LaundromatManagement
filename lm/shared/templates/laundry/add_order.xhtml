@@ -9,7 +9,7 @@
 <div class="well">
 	<form action="{% url add-order %}" method="post" class="form-horizontal">{% csrf_token %}
 	<div id="customer">
-	<h3> Customer Details</h3>
+	<h4> Customer Details</h4>
 	{%for fld in customer_form.visible_fields%}
 	    <div class="control-group">
 			<label class="control-label" {%if field.id%}for="{{field.id}}"{%endif%}>
@@ -29,7 +29,7 @@
 	{%endfor%}
 	</div>
 	<div id="order">
-	<h3> Order Details</h3>
+	<h4> Order Details</h4>
 	{%for fld in order_form.visible_fields%}
 	    <div class="control-group">
 			<label class="control-label" {%if field.id%}for="{{field.id}}"{%endif%}>
@@ -55,6 +55,9 @@
   	</div>
 	</form>
 	<script type="text/javascript">
+	
+	$("#id_date").datepicker({format: 'yyyy-mm-dd',autoclose:true});
+	
 	$("#id_mobile_number").focusout(function(){
 		mobile_no = $("#id_mobile_number").val();
 		$.get("{% url customer-detail %}", { mobile_no:mobile_no }, function(data) {

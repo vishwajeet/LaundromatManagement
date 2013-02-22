@@ -10,7 +10,7 @@ ORDER_STATUS_CHOICES = (
 
 class Customer(models.Model):
     
-    mobile_number = models.BigIntegerField(verbose_name=_('Mobile Number'),unique=True,
+    mobile_number = models.BigIntegerField(verbose_name=_('Mobile Number'),
                                            help_text=_("Enter mobile number 10 digits"))
     name = models.CharField(verbose_name=_('Customer Name'), max_length=100,help_text=_("Name of Customer"))
     email = models.EmailField(verbose_name=_('E-mail address:'),blank=True, null=True)
@@ -28,8 +28,8 @@ class Customer(models.Model):
 
 class Order(models.Model):
     customer = models.ForeignKey('Customer', verbose_name=_('Customer'))
-    date = models.DateTimeField(auto_now_add=True, verbose_name=_('Transaction Date:'))
-    wash_load = models.DecimalField(verbose_name=_('Wash Load'),decimal_places=2,max_digits=10,
+    date = models.DateTimeField(verbose_name=_('Order Date'))
+    wash_load = models.DecimalField(verbose_name=_('Wash Load'),decimal_places=1,max_digits=10,
                                              help_text=_("Wash Load in Kgs"),blank=True, null=True)
     
     wash_price = models.IntegerField(verbose_name=_('Wash Price'),help_text=_("Wash Price"),

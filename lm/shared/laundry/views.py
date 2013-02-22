@@ -83,13 +83,13 @@ def order_edit(request,order_id):
 def compute_bill(request):
     '''
     upto 3 kgs 100
-    upto 4 kgs 130
+    upto 4 kgs 125
     upto 5 150
-    upto 6 180
+    upto 6 175
     upto 7 200
     Above 7 200+30*extra kgs
     '''
-    rates = {'0':0,'3':100,'4':130,'5':150,'6':180,'7':200}
+    rates = {'0':0,'3':100,'4':125,'5':150,'6':175,'7':200}
     
     wash_load = request.GET.get('wash_load', 0)
     iron_load = request.GET.get('iron_load', 0)
