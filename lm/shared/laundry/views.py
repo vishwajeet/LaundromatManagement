@@ -115,12 +115,15 @@ def compute_bill(request):
     return HttpResponse(json, mimetype="application/json")
 
 def get_orders(request):
-    query = request.GET.get("q", 'pending')
+    status = request.GET.get("q", None)
+    cust = request.GET.get("c", None)
     orders = Order.objects.all().order_by('-date')
-    if query=='pending':
+    if status=='pending':
         orders = orders.exclude(status='DE')
-    if query=='delivered':
+    if status=='delivered':
         orders = orders.filter(status='DE')
+    if cust:
+        orders = orders.filter(customer__id=cust)
     template_context = {'orders':orders}
     return render_to_response('laundry/orders.xhtml',template_context,context_instance=RequestContext(request))
 

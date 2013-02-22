@@ -6,7 +6,7 @@
 	{% block header %} Edit Order {% endblock %}
 	
 {% block content %}
-<p><a class="btn btn-primary" href="{% url get-orders %}">List of Orders </a></p>
+<p><a class="btn btn-primary" href="{% url get-orders %}?q=pending">List of Orders </a></p>
 <div class="well">
 	<form action="{% url edit-order order.id %}" method="post" class="form-horizontal">{% csrf_token %}
 		<div id="order">
@@ -57,6 +57,7 @@
   	</div>
 	</form>
 	<script type="text/javascript">
+	$("#id_date").datepicker({format: 'yyyy-mm-dd',autoclose:true});
 	$("#id_mobile_number").focusout(function(){
 		mobile_no = $("#id_mobile_number").val();
 		$.get("{% url customer-detail %}", { mobile_no:mobile_no }, function(data) {

@@ -37,7 +37,11 @@ class Customer(models.Model):
             last_visit = (datetime.date.today() - last_visit_date).days
             
         return last_visit
-
+    
+    @property
+    def orders(self):
+        orders = Order.objects.filter(customer=self).count()
+        return orders
 
 class Order(models.Model):
     customer = models.ForeignKey('Customer', verbose_name=_('Customer'))
