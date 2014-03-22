@@ -36,7 +36,8 @@ def customer_detail(request,store_slug):
         name = customer.name
         email = customer.email
         address = customer.address
-        data = {'success':True,'name':name, 'email':email, 'address':address}
+        alt_contact = customer.alt_contact_number
+        data = {'success':True,'name':name, 'email':email, 'address':address,'alt_contact':alt_contact}
     except:
         data = {'success':False}
     
