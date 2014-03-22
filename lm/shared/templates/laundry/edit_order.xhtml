@@ -6,9 +6,9 @@
 	{% block header %} Edit Order {% endblock %}
 	
 {% block content %}
-<p><a class="btn btn-primary" href="{% url get-orders %}?q=pending">List of Orders </a></p>
+<p><a class="btn btn-primary" href="{% url get-orders request.store.code %}?q=pending">List of Orders </a></p>
 <div class="well">
-	<form action="{% url edit-order order.id %}" method="post" class="form-horizontal">{% csrf_token %}
+	<form action="{% url edit-order store_slug=request.store.code,order_id=order.id%}" method="post" class="form-horizontal">{% csrf_token %}
 		<div id="order">
 	<h3> Order Details</h3>
 	{%for fld in order_form.visible_fields%}
@@ -60,7 +60,7 @@
 	$("#id_date").datepicker({format: 'yyyy-mm-dd',autoclose:true});
 	$("#id_mobile_number").focusout(function(){
 		mobile_no = $("#id_mobile_number").val();
-		$.get("{% url customer-detail %}", { mobile_no:mobile_no }, function(data) {
+		$.get("{% url customer-detail request.store.code %}", { mobile_no:mobile_no }, function(data) {
 			  success = data.success
 			  if(success)
 			  {
@@ -90,7 +90,7 @@
 			discount = $("#id_discount").val();
 		}
 		
-		$.get("{% url compute-bill %}", { wash_load:wash_load,iron_load:iron_load,discount:discount }, function(data) {
+		$.get("{% url compute-bill request.store.code %}", { wash_load:wash_load,iron_load:iron_load,discount:discount }, function(data) {
 			  $("#id_billed_amount").val(data.total);
 			  $("#id_wash_price").val(data.wash_cost);
 			  $("#id_iron_price").val(data.iron_cost);

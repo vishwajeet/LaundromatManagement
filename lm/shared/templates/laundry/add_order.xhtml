@@ -7,7 +7,7 @@
 	
 {% block content %}
 <div class="well">
-	<form action="{% url add-order %}" method="post" class="form-horizontal">{% csrf_token %}
+	<form action="{% url add-order request.store.code %}" method="post" class="form-horizontal">{% csrf_token %}
 	<div id="customer">
 	<h4> Customer Details</h4>
 	{%for fld in customer_form.visible_fields%}
@@ -60,7 +60,7 @@
 	
 	$("#id_mobile_number").focusout(function(){
 		mobile_no = $("#id_mobile_number").val();
-		$.get("{% url customer-detail %}", { mobile_no:mobile_no }, function(data) {
+		$.get("{% url customer-detail request.store.code %}", { mobile_no:mobile_no }, function(data) {
 			  success = data.success
 			  if(success)
 			  {
@@ -90,7 +90,7 @@
 			discount = $("#id_discount").val();
 		}
 		
-		$.get("{% url compute-bill %}", { wash_load:wash_load,iron_load:iron_load,discount:discount }, function(data) {
+		$.get("{% url compute-bill request.store.code %}", { wash_load:wash_load,iron_load:iron_load,discount:discount }, function(data) {
 			  $("#id_billed_amount").val(data.total);
 			  $("#id_wash_price").val(data.wash_cost);
 			  $("#id_iron_price").val(data.iron_cost);

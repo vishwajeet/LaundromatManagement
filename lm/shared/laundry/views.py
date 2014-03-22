@@ -11,20 +11,21 @@ from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth import authenticate,login
 
-from .forms import OrderForm, CustomerForm
+from .forms import OrderForm, CustomerForm,CustomLoginForm
 from .models import Customer, Order
 
 def add_customer(request):
     pass
 
 @login_required
-def index(request):
+def index(request,store_slug):
     template_context = {}
     return render_to_response('index.xhtml',template_context,context_instance=RequestContext(request))
 
 
-def customer_detail(request):
+def customer_detail(request,store_slug):
     mobile_no = request.GET.get('mobile_no', None)
     try:
         mobile_no = int(mobile_no)
@@ -41,7 +42,7 @@ def customer_detail(request):
     return HttpResponse(json, mimetype="application/json")
     
 
-def add_order(request):
+def add_order(request,store_slug):
     if request.POST:
         order_form = OrderForm(request.POST)
         customer_form = CustomerForm(request.POST)
@@ -67,7 +68,7 @@ def add_order(request):
     template_context = {'order_form': order_form,'customer_form':customer_form}
     return render_to_response('laundry/add_order.xhtml',template_context,context_instance=RequestContext(request))
 
-def order_edit(request,order_id):
+def order_edit(request,store_slug,order_id):
     try:
         order = Order.objects.get(id=order_id)
     except:
@@ -88,7 +89,7 @@ def order_edit(request,order_id):
     return render_to_response('laundry/edit_order.xhtml',template_context,context_instance=RequestContext(request))
 
     
-def compute_bill(request):
+def compute_bill(request,store_slug):
     '''
     upto 3 kgs 100
     upto 4 kgs 125
@@ -121,7 +122,7 @@ def compute_bill(request):
     json = simplejson.dumps(data)
     return HttpResponse(json, mimetype="application/json")
 
-def get_orders(request):
+def get_orders(request,store_slug):
     status = request.GET.get("q", None)
     cust = request.GET.get("c", None)
     orders = Order.objects.all().order_by('-date')
@@ -134,12 +135,26 @@ def get_orders(request):
     template_context = {'orders':orders}
     return render_to_response('laundry/orders.xhtml',template_context,context_instance=RequestContext(request))
 
-def get_customers(request):
+def get_customers(request,store_slug):
     customers =  list(Customer.objects.all())
     customers.sort(key=lambda x: x.last_visit,reverse=True)
     template_context = {'customers':customers}
     return render_to_response('laundry/customers.xhtml',template_context,context_instance=RequestContext(request))
 
     
-    
+
+def login_user(request):
+    username = password = ''
+    form = CustomLoginForm()
+    if request.POST:
+        username = request.POST['username']
+        password = request.POST['password']
+        store    = request.POST['store']
+        user = authenticate(username=username, password=password)
+        if user is not None:
+            if user.is_active:
+                login(request, user)
+                url = "/"+ store + "/"
+                return HttpResponseRedirect(url)
+    return render_to_response('registration/login.html', {'form':form},context_instance=RequestContext(request))
 

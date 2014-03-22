@@ -34,7 +34,7 @@
     			 <td>{{order.billed_amount}}</td>
     			 <td>{{order.id}}</td>
     			  <td>{{order.get_status_display}}</td>
-    			  <td><a href="{% url edit-order order.id%}" class="icon-edit" title="Edit Order"></a></td>
+    			  <td><a href="{% url edit-order store_slug=request.store.code,order_id=order.id%}" class="icon-edit" title="Edit Order"></a></td>
   			</tr>
 	  		{% endfor %}
 	  	</tbody>

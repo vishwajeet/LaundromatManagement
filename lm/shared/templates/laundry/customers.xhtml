@@ -27,7 +27,7 @@
     			<td>{{customer.alt_contact_number}}</td>
     			<td>{{customer.email}}</td>
     			 <td>{{customer.address}}</td>
-    			 <td><a href="{% url get-orders %}?c={{customer.id}}">{{customer.orders}}</a></td>
+    			 <td><a href="{% url get-orders request.store.code %}?c={{customer.id}}">{{customer.orders}}</a></td>
     			 <td>{{customer.last_visit}}</td>
   			</tr>
 	  		{% endfor %}

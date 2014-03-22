@@ -7,7 +7,7 @@
 	
 {% block content %}
 <div class="well">
-	<form action="{% url django.contrib.auth.views.login %}" method="post" class="form-horizontal">{% csrf_token %}
+	<form action="{% url login_user %}" method="post" class="form-horizontal">{% csrf_token %}
 	
 
 {%for fld in form.visible_fields%}
