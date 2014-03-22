@@ -24,7 +24,9 @@
   <div class="navbar">
 	  <div class="navbar-inner">
 	    <ul class="nav">
+	      {% if user.is_authenticated %}
 	      <li><a href="{% url index1 request.store.code %}">Home</a></li>
+	      {% endif %}
 	    </ul>
 	  </div>
 	</div>
