@@ -69,7 +69,7 @@
 			  }
 			  else
 			  {
-				alert("new customer");  
+				
 			  }
 			});
 		});
@@ -80,6 +80,7 @@
 		iron_load = 0;
 		discount = 0;
 		wash_load = Math.round($("#id_wash_load").val());
+		var is_urgent = $('#id_is_urgent').attr('checked')?true:false;
 		if($("#id_iron_load").val())
 		{
 				iron_load = $("#id_iron_load").val();
@@ -90,7 +91,7 @@
 			discount = $("#id_discount").val();
 		}
 		
-		$.get("{% url compute-bill request.store.code %}", { wash_load:wash_load,iron_load:iron_load,discount:discount }, function(data) {
+		$.get("{% url compute-bill request.store.code %}", { wash_load:wash_load,iron_load:iron_load,discount:discount,is_urgent:is_urgent}, function(data) {
 			  $("#id_billed_amount").val(data.total);
 			  $("#id_wash_price").val(data.wash_cost);
 			  $("#id_iron_price").val(data.iron_cost);
@@ -102,6 +103,7 @@
 	$("#id_iron_load").focusout(compute_bill);
 	
 	$("#id_discount").focusout(compute_bill);
+	$("#id_is_urgent").click(compute_bill);
 		
 	</script>
 </div>

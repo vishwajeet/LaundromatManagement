@@ -98,13 +98,13 @@ def compute_bill(request,store_slug):
     '''
 
     '''
-    rates = {'0':0,'3':100,'4':125,'5':150,'6':175,'7':200}
 
     store_rate = Rates.objects.get(store=request.store)
     
     wash_load = request.GET.get('wash_load', 0)
     iron_load = request.GET.get('iron_load', 0)
     discount = request.GET.get('discount', 0)
+    is_urgent = request.GET.get('is_urgent', 0)
     
     wash_load_int = int(wash_load)
     iron_load_int = int(iron_load)
@@ -121,7 +121,8 @@ def compute_bill(request,store_slug):
     
     iron_cost = iron_load_int*store_rate.iron_rate
     total = wash_cost+iron_cost - discount
-    
+    if is_urgent=='true':
+        total = total + store_rate.premium
     
     data = {'total':total,'wash_cost':wash_cost,'iron_cost':iron_cost}
     json = simplejson.dumps(data)
