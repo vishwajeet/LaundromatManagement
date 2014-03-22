@@ -131,7 +131,7 @@ def compute_bill(request,store_slug):
 def get_orders(request,store_slug):
     status = request.GET.get("q", None)
     cust = request.GET.get("c", None)
-    orders = Order.objects.all().order_by('-date')
+    orders = Order.objects.filter(store=request.store).order_by('-date')
     if status=='pending':
         orders = orders.exclude(status='DE')
     if status=='delivered':
@@ -142,7 +142,7 @@ def get_orders(request,store_slug):
     return render_to_response('laundry/orders.xhtml',template_context,context_instance=RequestContext(request))
 
 def get_customers(request,store_slug):
-    customers =  list(Customer.objects.all())
+    customers =  list(Customer.objects.filter(store=request.store))
     customers.sort(key=lambda x: x.last_visit,reverse=True)
     template_context = {'customers':customers}
     return render_to_response('laundry/customers.xhtml',template_context,context_instance=RequestContext(request))
