@@ -65,6 +65,12 @@ class Order(models.Model):
     
     iron_price = models.IntegerField(verbose_name=_('Iron Price'),help_text=_("Iron Price"),
                                      blank=True, null=True)
+
+    is_urgent = models.BooleanField(verbose_name=_('Urgent Delivery'), default=False)
+
+    total_clothes = models.IntegerField(verbose_name=_('Total Clothes'),
+                                        help_text=_("Total Clothes Given"),blank=True, null=True)
+
     discount =  models.IntegerField(verbose_name=_('Discount'),help_text=_("Discount"),
                                     blank=True, null=True)
     

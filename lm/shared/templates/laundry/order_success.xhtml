@@ -12,7 +12,7 @@
   For reference keep your order id : {{order.id}} 
   </p>
   
-  <a class="btn btn-primary" href="{% url add-order %}">
+  <a class="btn btn-primary" href="{% url add-order request.store.code%}">
       Take another order
    </a>
   

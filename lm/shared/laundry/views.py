@@ -14,7 +14,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import authenticate,login
 
 from .forms import OrderForm, CustomerForm,CustomLoginForm
-from .models import Customer, Order
+from .models import Customer, Order,Rates
 
 def add_customer(request):
     pass
@@ -46,6 +46,7 @@ def add_order(request,store_slug):
     if request.POST:
         order_form = OrderForm(request.POST)
         customer_form = CustomerForm(request.POST)
+        customer_form.instance.store = request.store
         if customer_form.is_valid() and order_form.is_valid():
             customer = None
             try:
@@ -56,6 +57,7 @@ def add_order(request,store_slug):
                 customer = customer_form.save()
                 
             order_form.instance.customer = customer
+            order_form.instance.store = request.store
             order = order_form.save()
             template_context = {'customer':customer,'order':order}
             return render_to_response('laundry/order_success.xhtml',template_context,context_instance=RequestContext(request))
@@ -63,8 +65,8 @@ def add_order(request,store_slug):
           template_context = {'order_form': order_form,'customer_form':customer_form}
           return render_to_response('laundry/add_order.xhtml',template_context,context_instance=RequestContext(request))
   
-    order_form = OrderForm()
-    customer_form = CustomerForm()
+    order_form = OrderForm(initial={'store': request.store.id})
+    customer_form = CustomerForm(initial={'store': request.store.id})
     template_context = {'order_form': order_form,'customer_form':customer_form}
     return render_to_response('laundry/add_order.xhtml',template_context,context_instance=RequestContext(request))
 
@@ -91,14 +93,11 @@ def order_edit(request,store_slug,order_id):
     
 def compute_bill(request,store_slug):
     '''
-    upto 3 kgs 100
-    upto 4 kgs 125
-    upto 5 150
-    upto 6 175
-    upto 7 200
-    Above 7 200+30*extra kgs
+
     '''
     rates = {'0':0,'3':100,'4':125,'5':150,'6':175,'7':200}
+
+    store_rate = Rates.objects.get(store=request.store)
     
     wash_load = request.GET.get('wash_load', 0)
     iron_load = request.GET.get('iron_load', 0)
@@ -108,13 +107,16 @@ def compute_bill(request,store_slug):
     iron_load_int = int(iron_load)
     discount = int(discount)
     wash_cost = 0
+    if wash_load_int < 4:
+        wash_load_int = 4
     if wash_load_int > 7:
         excess_load = wash_load_int-7
-        wash_cost = rates['7'] + excess_load*30
+        wash_cost = store_rate.wr_upto_7kg + store_rate.wr_per_kg*excess_load
     else:
-        wash_cost = rates[wash_load]
+        wr_var = "wr_upto_" + str(wash_load_int) + "kg"
+        wash_cost  = getattr(store_rate, wr_var)
     
-    iron_cost = iron_load_int*5
+    iron_cost = iron_load_int*store_rate.iron_rate
     total = wash_cost+iron_cost - discount
     
     
