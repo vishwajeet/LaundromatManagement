@@ -11,7 +11,7 @@ from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.template.loader import get_template
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth import authenticate,login
+from django.contrib.auth import authenticate,login,logout
 
 from .forms import OrderForm, CustomerForm,CustomLoginForm
 from .models import Customer, Order,Rates
@@ -20,7 +20,10 @@ def add_customer(request):
     pass
 
 @login_required
-def index(request,store_slug):
+def index(request,store_slug=None):
+    if store_slug==None:
+        logout(request)
+        return HttpResponseRedirect('/login/')
     template_context = {}
     return render_to_response('index.xhtml',template_context,context_instance=RequestContext(request))
 
