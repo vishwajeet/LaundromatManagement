@@ -1,0 +1,38 @@
+{% extends "base.xhtml" %}
+
+{% block head_title %}BhejaWash Laundromat {% endblock %}
+
+
+{% block header %}BhejaWash Laundromat {% endblock %}
+	
+{% block content %}
+<div class="well">
+	<form action="{% url django.contrib.auth.views.login %}" method="post" class="form-horizontal">{% csrf_token %}
+	
+
+{%for fld in form.visible_fields%}
+	    <div class="control-group">
+			<label class="control-label" {%if field.id%}for="{{field.id}}"{%endif%}>
+        		{%if fld.field.required%}<i class="required_icon"></i>{%endif%}{{fld.label|title}}
+    		</label>
+    		<div class="controls">
+     		 	{{fld}}
+     		 	{% if fld.errors %}
+	     		 	<span class="text-error">
+	     		 	{% for err in fld.errors %}
+	     		 		{{ err }}
+	     		 	{% endfor %}
+	     		 	</span>
+     		 	{% endif %}
+    		</div>
+    	</div>
+	{%endfor%}
+	<div class="control-group">
+	    <div class="controls">
+	      <button type="submit" class="btn">Login</button>
+	    </div>
+  	</div>
+	</form>
+</div>
+{% endblock %}
+	 

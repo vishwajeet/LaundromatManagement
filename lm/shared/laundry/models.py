@@ -10,8 +10,13 @@ ORDER_STATUS_CHOICES = (
     ('DE', 'Delivered'),
 )
 
+ORDER_TYPE_CHOICES = (
+    ('IS', 'In Store'),
+    ('PU', 'Pickup')
+)
+
 class Customer(models.Model):
-    
+    store = models.ForeignKey('Store', verbose_name=_('Store'),blank=True, null=True)
     mobile_number = models.BigIntegerField(verbose_name=_('Mobile Number'),
                                            help_text=_("Enter mobile number 10 digits"))
     name = models.CharField(verbose_name=_('Customer Name'), max_length=100,help_text=_("Name of Customer"))
@@ -44,7 +49,10 @@ class Customer(models.Model):
         return orders
 
 class Order(models.Model):
+    store = models.ForeignKey('Store', verbose_name=_('Store'),blank=True, null=True)
     customer = models.ForeignKey('Customer', verbose_name=_('Customer'))
+    order_type = models.CharField(verbose_name=_('Order Type'), max_length=20,
+                              help_text=_("Type of Order"), choices=ORDER_TYPE_CHOICES, default='IS')
     date = models.DateTimeField(verbose_name=_('Order Date'))
     wash_load = models.DecimalField(verbose_name=_('Wash Load'),decimal_places=1,max_digits=10,
                                              help_text=_("Wash Load in Kgs"),blank=True, null=True)
@@ -76,4 +84,34 @@ class Order(models.Model):
             
     def __unicode__(self):
         return "%s-%d(%s Kgs,%s pcs)"%(self.customer.name,self.customer.mobile_number,self.wash_load,self.iron_load)
-    
+
+class Pickup(models.Model):
+    pass
+
+
+class Store(models.Model):
+    name = models.CharField(verbose_name=_('Store Name'), max_length=128,help_text=_("Store Name"))
+    code = models.CharField(verbose_name=_('Store Code'), max_length=5,help_text=_("Store Code"))
+    email = models.EmailField(verbose_name=_('Store Email'),blank=True, null=True)
+    address = models.CharField(verbose_name=_('Address'), max_length=255,help_text=_("Address of Store"),
+                               blank=True, null=True)
+    phone = models.CharField(verbose_name=_('Store Phone'), max_length=15,help_text=_("Store Phone"))
+
+    def __unicode__(self):
+        return self.name
+
+
+class Rates(models.Model):    
+    store = models.ForeignKey('Store', verbose_name=_('Store'))
+    iron_rate = models.IntegerField(verbose_name=_('Iron Rate'),help_text=_("Per piece iron rate"))
+    siron_rate = models.IntegerField(verbose_name=_('Steam Iron Rate'),help_text=_("Per piece steam iron rate"))
+    wr_upto_4kg = models.IntegerField(verbose_name=_('4kg Rate'),help_text=_("Upto 4kg rate"))
+    wr_upto_5kg = models.IntegerField(verbose_name=_('5kg Rate'),help_text=_("Upto 5kg rate"))
+    wr_upto_6kg = models.IntegerField(verbose_name=_('6kg Rate'),help_text=_("Upto 6kg rate"))
+    wr_upto_7kg = models.IntegerField(verbose_name=_('7kg Rate'),help_text=_("Upto 7kg rate"))
+    wr_per_kg = models.IntegerField(verbose_name=_('1kg Rate'),help_text=_("Per kg rate"))
+    premium = models.IntegerField(verbose_name=_('Premium Rate'),help_text=_("Premium Rate"))
+
+    def __unicode__(self):
+        return self.store.name
+

@@ -10,12 +10,19 @@ from django.http import HttpResponse,HttpResponseRedirect,Http404
 from django.core.urlresolvers import reverse
 from django.utils import simplejson
 from django.template.loader import get_template
+from django.contrib.auth.decorators import login_required
 
 from .forms import OrderForm, CustomerForm
 from .models import Customer, Order
 
 def add_customer(request):
     pass
+
+@login_required
+def index(request):
+    template_context = {}
+    return render_to_response('index.xhtml',template_context,context_instance=RequestContext(request))
+
 
 def customer_detail(request):
     mobile_no = request.GET.get('mobile_no', None)

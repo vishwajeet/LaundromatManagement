@@ -4,16 +4,11 @@ from django.conf import settings
 from django.contrib import admin
 admin.autodiscover()
 
-urlpatterns = patterns('django.views.generic.simple',
-            (r'^$','direct_to_template', {'template': 'index.xhtml'}),
-    # Examples:
-    # url(r'^$', 'LBTP.views.home', name='home'),
-    # url(r'^LBTP/', include('LBTP.foo.urls')),
+from laundry.views import index
 
-    # Uncomment the admin/doc line below to enable admin documentation:
-    # url(r'^admin/doc/', include('django.contrib.admindocs.urls')),
-
-    # Uncomment the next line to enable the admin:
+urlpatterns = patterns('',
+    url(r'^$', index,name='index'),
+    url(r'^login/$', 'django.contrib.auth.views.login'),
     url(r'^admin/', include(admin.site.urls)),
     url(r'^lm/', include('laundry.urls')),
 )
