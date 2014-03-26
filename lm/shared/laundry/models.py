@@ -54,6 +54,7 @@ class Order(models.Model):
     order_type = models.CharField(verbose_name=_('Order Type'), max_length=20,
                               help_text=_("Type of Order"), choices=ORDER_TYPE_CHOICES, default='IS')
     date = models.DateTimeField(verbose_name=_('Order Date'))
+    delivery_date = models.DateTimeField(verbose_name=_('Delivery Date'), blank=True, null=True)
     wash_load = models.DecimalField(verbose_name=_('Wash Load'),decimal_places=1,max_digits=10,
                                              help_text=_("Wash Load in Kgs"),blank=True, null=True)
     

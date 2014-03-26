@@ -139,6 +139,8 @@ def get_orders(request,store_slug):
         orders = orders.filter(status='DE')
     if cust:
         orders = orders.filter(customer__id=cust)
+    if status == 'pendingtoday':
+        orders = orders.filter(delivery_date=datetime.date.today())
     template_context = {'orders':orders}
     return render_to_response('laundry/orders.xhtml',template_context,context_instance=RequestContext(request))
 

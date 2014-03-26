@@ -58,6 +58,8 @@
 	</form>
 	<script type="text/javascript">
 	$("#id_date").datepicker({format: 'yyyy-mm-dd',autoclose:true});
+	$("#id_delivery_date").datepicker({format: 'yyyy-mm-dd',autoclose:true});
+	
 	$("#id_mobile_number").focusout(function(){
 		mobile_no = $("#id_mobile_number").val();
 		$.get("{% url customer-detail request.store.code %}", { mobile_no:mobile_no }, function(data) {
@@ -69,7 +71,6 @@
 			  }
 			  else
 			  {
-				alert("new customer");  
 			  }
 			});
 		});

@@ -16,8 +16,17 @@
   		<a class="btn  btn-primary" type="button" href="{% url add-order request.store.code %}">New Order</a>
   	</p>
   </div>
-  
-    <div class="well span4">
+
+  <div class="well span4">
+    <p class="text-success">
+    Orders Due Today
+  </p>
+    <p>
+    
+      <a class="btn  btn-primary" type="button" href="{% url get-orders request.store.code %}?q=pendingtoday">Orders Due Today</a>
+    </p>
+  </div>  
+  <div class="well span4">
   	<p class="text-success">
 		Pending Orders
 	</p>

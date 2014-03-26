@@ -24,7 +24,7 @@
 		</thead>
   		<tbody>		
   			{% for order in orders %}
-  			<tr>
+  			<tr {% if order.is_urgent%}class="warning"{% endif %}>
   				<td>{{order.date|date:"M d, Y" }}</td>
     			<td>{{order.customer.name}}</td>
     			<td>{{order.customer.mobile_number}}</td>
